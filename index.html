@@ -297,6 +297,12 @@
       Array.from(document.body.querySelectorAll('input')).forEach(function(input) {
         input.addEventListener('change', recalc);
         input.addEventListener('keyup', recalc);
+        input.addEventListener('paste', function(evt) {
+          // Firefox lets you paste in commas, which mess things up.
+          evt.preventDefault();
+          var text = ((evt.originalEvent || evt).clipboardData.getData('text/plain') || "").match(/\d+/g).join('');
+          input.value = parseFloat(text);
+        });
       });
     </script>
     <!-- Tip o' the hat to https://tholman.com/github-corners -->
